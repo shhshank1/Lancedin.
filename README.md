@@ -1,4 +1,4 @@
-# LancedIn (The Digital Curator)
+# LancedIn 
 
 > **A premium, high-end marketplace connecting seekers and creative talent, built with a robust backend architecture, secure OAuth session management, and a meticulously styled editorial UI.**
 
