@@ -1,0 +1,49 @@
+{
+  "theme": {
+    "colors": {
+      "primary": "#630ed4",
+      "primary-container": "#7c3aed",
+      "primary-fixed": "#eaddff",
+      "primary-fixed-dim": "#d2bbff",
+      "on-primary": "#ffffff",
+      "on-primary-container": "#ede0ff",
+      "on-primary-fixed": "#25005a",
+      "secondary": "#6a4fa0",
+      "secondary-container": "#c4a7ff",
+      "tertiary": "#7d3d00",
+      "tertiary-container": "#a15100",
+      "error": "#ba1a1a",
+      "surface": "#f8f9fa",
+      "surface-container": "#edeeef",
+      "surface-container-high": "#e7e8e9",
+      "surface-container-highest": "#e1e3e4",
+      "surface-container-low": "#f3f4f5",
+      "surface-container-lowest": "#ffffff",
+      "on-surface": "#191c1d",
+      "on-surface-variant": "#4a4455",
+      "outline": "#7b7487",
+      "outline-variant": "#ccc3d8",
+      "background": {
+        "light": "#f8f9fa",
+        "dark": "#111415"
+      }
+    },
+    "typography": {
+      "display": ["Inter", "sans-serif"],
+      "headline": ["Inter", "sans-serif"],
+      "body": ["Inter", "sans-serif"],
+      "label": ["Inter", "sans-serif"],
+      "icons": "Material Symbols Outlined"
+    },
+    "spacing": {
+      "header-h": "72px",
+      "container-max": "80rem"
+    },
+    "borderRadius": {
+      "DEFAULT": "0.25rem",
+      "lg": "0.5rem",
+      "xl": "0.75rem",
+      "full": "9999px"
+    }
+  }
+}

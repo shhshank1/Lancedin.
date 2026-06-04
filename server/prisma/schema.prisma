@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// This defines a custom ENUM (a strict set of allowed values) for our user types.
+enum Role {
+  SEEKER
+  TALENT
+}
+
+// This is our User blueprint. Prisma will turn this into a PostgreSQL table.
+model User {
+  id         String   @id @default(uuid()) // Uses a secure UUID instead of standard 1, 2, 3...
+  email      String?  @unique              // Optional, but must be unique if provided
+  name       String?
+  avatar     String?
+  
+  // OAuth specific fields (since we use Google/LinkedIn)
+  provider   String   // Will store "google" or "linkedin"
+  providerId String   @unique // The unique ID given to us by Google/LinkedIn
+  
+  role       Role     @default(SEEKER) // Defaults every new user to a SEEKER
+
+  // --- RELATIONS ---
+  projects              Project[]
+  messagesSent          Message[]
+  conversationsAsSeeker Conversation[] @relation("SeekerConversations")
+  conversationsAsTalent Conversation[] @relation("TalentConversations")
+
+  createdAt  DateTime @default(now())  // Automatically tracks when the row was created
+  updatedAt  DateTime @updatedAt       // Automatically updates the timestamp when changed
+}
+
+// Portfolios / Projects created by the Talent
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  mediaUrl    String?  // URL to an image or video showcasing the work
+  
+  // Foreign Key linking to the User who created it (One-to-Many)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Many-to-Many relationship with Tags
+  tags        Tag[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Skills / Categories used for filtering
+model Tag {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  
+  // Many-to-Many relationship with Projects
+  projects  Project[]
+}
+
+// A chat room between exactly one Seeker and one Talent
+model Conversation {
+  id          String   @id @default(uuid())
+  
+  // The person looking to hire
+  seekerId    String
+  seeker      User     @relation("SeekerConversations", fields: [seekerId], references: [id])
+  
+  // The person offering the skill
+  talentId    String
+  talent      User     @relation("TalentConversations", fields: [talentId], references: [id])
+
+  messages    Message[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // A Seeker and a Talent should only have ONE unique conversation together
+  @@unique([seekerId, talentId])
+}
+
+// Individual chat bubbles
+model Message {
+  id             String       @id @default(uuid())
+  content        String
+  
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  isRead         Boolean      @default(false)
+  
+  createdAt      DateTime     @default(now())
+}

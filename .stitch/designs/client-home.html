@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentFlow - Client Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#ffe0cd",
+              "surface-dim": "#d9dadb",
+              "on-tertiary": "#ffffff",
+              "primary": "#630ed4",
+              "on-secondary": "#ffffff",
+              "inverse-surface": "#2e3132",
+              "tertiary": "#7d3d00",
+              "surface-container-high": "#e7e8e9",
+              "on-primary": "#ffffff",
+              "on-background": "#191c1d",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "secondary-fixed": "#eaddff",
+              "tertiary-fixed-dim": "#ffb784",
+              "inverse-on-surface": "#f0f1f2",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#732ee4",
+              "secondary-container": "#c4a7ff",
+              "on-primary-container": "#ede0ff",
+              "surface": "#f8f9fa",
+              "on-secondary-fixed-variant": "#523787",
+              "on-surface-variant": "#4a4455",
+              "inverse-primary": "#d2bbff",
+              "secondary-fixed-dim": "#d2bbff",
+              "secondary": "#6a4fa0",
+              "surface-container-highest": "#e1e3e4",
+              "tertiary-container": "#a15100",
+              "surface-bright": "#f8f9fa",
+              "primary-container": "#7c3aed",
+              "primary-fixed": "#eaddff",
+              "outline-variant": "#ccc3d8",
+              "on-tertiary-fixed": "#301400",
+              "outline": "#7b7487",
+              "primary-fixed-dim": "#d2bbff",
+              "error": "#ba1a1a",
+              "on-secondary-container": "#523787",
+              "background": "#f8f9fa",
+              "tertiary-fixed": "#ffdcc6",
+              "on-primary-fixed": "#25005a",
+              "surface-container-low": "#f3f4f5",
+              "on-error-container": "#93000a",
+              "on-primary-fixed-variant": "#5a00c6",
+              "on-surface": "#191c1d",
+              "surface-container": "#edeeef",
+              "on-tertiary-fixed-variant": "#713700",
+              "surface-variant": "#e1e3e4",
+              "on-secondary-fixed": "#25005a"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #630ed4 0%, #7c3aed 100%);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 glass-nav border-b border-slate-200/50 shadow-sm px-6 py-3 flex justify-between items-center max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tight text-slate-900">TalentFlow</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-violet-600 font-semibold transition-colors duration-200" href="#">Post</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">mail</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/10">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="portrait of a professional woman with a friendly smile, clean studio background, professional corporate headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUNKSm3kbyj0F5hnf4mYK4j0VmVEiTMPT8K3wNZ5S5wBV2CjDRaj7qpZigGrk1Hrvg5k4qzidJ1kXtEb9UeYSMHZ7lWgGWPafZMT8Sf7Q_cazlhS2fmQKm4N1OJWe683J-J4gNpKjr4-33a9gZcA-iX1_k07ZavDkrJQz05r4ACNlBX8NOqIw7RLXclSJ98r1nkMRz2AO9T5zJqEUzcBT7vifumHSTaPJLKdFClnDSWgrdEditl-Mugk8crHnGgYBxPzFCFy25Y2AU"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-16">
+<!-- Hero Search Section -->
+<section class="max-w-7xl mx-auto px-6 mb-16 text-center">
+<h1 class="text-5xl font-extrabold tracking-tight mb-8 text-on-surface">
+                Discover your next <span class="text-primary">creative partner.</span>
+</h1>
+<div class="relative max-w-2xl mx-auto">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full pl-14 pr-6 py-5 bg-surface-container-highest rounded-full border-none focus:ring-2 focus:ring-primary/20 text-lg placeholder:text-on-surface-variant/60 shadow-sm" placeholder="Find a skill, talent, or creator..." type="text"/>
+<button class="absolute right-3 top-2 bottom-2 px-8 rounded-full hero-gradient text-white font-semibold text-sm active:scale-95 transition-all">
+                    Search
+                </button>
+</div>
+</section>
+<!-- Filters Section -->
+<section class="max-w-7xl mx-auto px-6 mb-12">
+<div class="flex flex-wrap justify-center gap-3">
+<button class="px-6 py-2 bg-primary text-white rounded-full text-sm font-medium transition-all">All Talents</button>
+<button class="px-6 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high rounded-full text-sm font-medium transition-all">UI/UX Design</button>
+<button class="px-6 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high rounded-full text-sm font-medium transition-all">Video Editor</button>
+<button class="px-6 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high rounded-full text-sm font-medium transition-all">Copywriter</button>
+<button class="px-6 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high rounded-full text-sm font-medium transition-all">3D Artist</button>
+<button class="px-6 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high rounded-full text-sm font-medium transition-all">Motion Graphics</button>
+<button class="px-6 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high rounded-full text-sm font-medium transition-all">Frontend Dev</button>
+</div>
+</section>
+<!-- Main Content: Talent Grid -->
+<section class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- Talent Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_12px_32px_rgba(25,28,29,0.04)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="relative mb-4">
+<img alt="Profile of Alex Rivera" class="w-full h-56 object-cover rounded-xl grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Close-up portrait of a male designer with stylish glasses, soft natural window lighting, minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABfFMuXGwi27BBpouX2GbUd5X4sYwP-r1I523LwaAYCV2op5drvt_pjGekR0ThzurC4alnyihr-rRN-rabcxkkNhSh1UvnxQUZzKNZ3jRLyxzAz1ssalWEm064KgdQTKkOnWhOK2JezjYZ_hMSIBwePFbMnAbxcHtxKWOvtCE4xwt-Os8-WYWjfQIE_ZAHwznACaCkXk1jG5KSI3IaHGiV8S7-6DbPf7PJvYsBbKYTYW91WnZS4BD6jlKzugFYXFDeT-EJ8cNaeh8y"/>
+<div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.9</span>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-lg font-bold text-on-surface">Alex Rivera</h3>
+<div class="flex flex-wrap gap-2 py-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[10px] font-bold uppercase tracking-wider">UI/UX Designer</span>
+</div>
+<div class="pt-3 flex items-center justify-between border-t border-outline-variant/10">
+<span class="text-on-surface-variant text-xs">Starting at</span>
+<span class="text-on-surface font-bold text-lg">$65/hr</span>
+</div>
+</div>
+</div>
+<!-- Talent Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_12px_32px_rgba(25,28,29,0.04)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="relative mb-4">
+<img alt="Profile of Sarah Chen" class="w-full h-56 object-cover rounded-xl grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Professional woman in a creative studio setting, warm lighting, looking confidently at camera, blurred art equipment in background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkkevPINSgeqDhW4bfWjEuYIZyjn1oTRqu_0yMLkRMMTxOYW4SWaXb-uFmCTzsDKLFDgE1-Z1yg7GEwLjCf_EukT5MkGmcqq4rD7EyWx3ylCKQ9hzq-RvRh09FiMhQOzeuT0RBCOVs8nr1HoDEiRX1GQXm6RLckBe0VBM1Pd_CwrN7upY72UoGBXvZj9a9WNS1BUJmHYjHTdQilWsdo_ff6mOQ-gXFumgnu3dtcsLy5p5DVuh5rQ-liRt-GZbzYEKD5OtjMWDwecYY"/>
+<div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">5.0</span>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-lg font-bold text-on-surface">Sarah Chen</h3>
+<div class="flex flex-wrap gap-2 py-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[10px] font-bold uppercase tracking-wider">Motion Graphics</span>
+</div>
+<div class="pt-3 flex items-center justify-between border-t border-outline-variant/10">
+<span class="text-on-surface-variant text-xs">Starting at</span>
+<span class="text-on-surface font-bold text-lg">$85/hr</span>
+</div>
+</div>
+</div>
+<!-- Talent Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_12px_32px_rgba(25,28,29,0.04)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="relative mb-4">
+<img alt="Profile of Marcus Thorne" class="w-full h-56 object-cover rounded-xl grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Middle aged man with short beard, wearing a casual sweater, clean background with soft bokeh, high-end editorial photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJJbgGYzK1J-RNI2NEssgxuh3rf59Ud3ikSBEJLHBip_urTvZnsFl2HNGLO0V9emYAHXZdUHFyHlWSyN1vLuchGcnoJsuJPPiW4jK3YrTNwRBFvi90_zXhuUwdh4Hw0hHn3YkYZlHNo8gb85GI98qBAE9KqRvfmytaW51orU802VsLp395OOAD2Kisyo_PwHUCEVd66rSEpDFSn6WJ2aEJ4q-0Ob73-yY7T5H1ZeXETA_rlK9YMqr4C_AidMfbZJ2wryZWBkl1fdmH"/>
+<div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.8</span>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-lg font-bold text-on-surface">Marcus Thorne</h3>
+<div class="flex flex-wrap gap-2 py-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[10px] font-bold uppercase tracking-wider">Copywriter</span>
+</div>
+<div class="pt-3 flex items-center justify-between border-t border-outline-variant/10">
+<span class="text-on-surface-variant text-xs">Starting at</span>
+<span class="text-on-surface font-bold text-lg">$50/hr</span>
+</div>
+</div>
+</div>
+<!-- Talent Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_12px_32px_rgba(25,28,29,0.04)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="relative mb-4">
+<img alt="Profile of Elena Vance" class="w-full h-56 object-cover rounded-xl grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Young professional woman in creative workspace, sunlight filtering through plants, warm and inviting atmosphere, soft focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC98-_R9mSSfqu4pNG2GEXSinjV2Qszc5KndWS3JA2rdu0DDhzAztEw__wY6e4d3zAoxZZ55Hu6zcVWydYsznWuL9wGGHWKgxap6C3AOcgfMq62z42JGn2h-xktHxVe_QM2tap9WkqbU7jsM30MwpevO2q35ccvVCPS8fK0rUPytsQOrytMHW7G4g6D01WtWzmM3BnqEde6N4n781TcRNXcqqL0jx_Ias9uOmWU3N1VfWH5Ab4Myz8BL3MJnzyQnYsq1gZlPOmPPaYK"/>
+<div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface">4.7</span>
+</div>
+</div>
+<div class="space-y-1">
+<h3 class="text-lg font-bold text-on-surface">Elena Vance</h3>
+<div class="flex flex-wrap gap-2 py-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[10px] font-bold uppercase tracking-wider">3D Artist</span>
+</div>
+<div class="pt-3 flex items-center justify-between border-t border-outline-variant/10">
+<span class="text-on-surface-variant text-xs">Starting at</span>
+<span class="text-on-surface font-bold text-lg">$95/hr</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Asymmetric CTA Section -->
+<section class="max-w-7xl mx-auto px-6 mt-24 mb-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-violet-50 rounded-[2rem] p-12">
+<div class="lg:col-span-7 pr-12">
+<span class="text-primary font-bold tracking-widest text-[10px] uppercase mb-4 block">Curated Network</span>
+<h2 class="text-4xl font-extrabold text-on-surface leading-tight mb-6">Can't find what you're looking for? Let us curate a list for you.</h2>
+<p class="text-on-surface-variant text-lg mb-8 leading-relaxed">Our concierge team helps top-tier clients match with pre-vetted specialists in under 24 hours.</p>
+<button class="hero-gradient px-10 py-4 rounded-xl text-white font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all">Request Concierge</button>
+</div>
+<div class="lg:col-span-5 relative h-80 overflow-hidden rounded-2xl">
+<img alt="Team collaboration" class="absolute inset-0 w-full h-full object-cover" data-alt="Diverse group of creative professionals collaborating in a bright, modern studio with high ceilings and architectural plants" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Bh0Vrfq-Xl_FV7dRmNKXa0ia27ptaOtRMa-Cwrfal6nsz3Sb-XB-08P2ygyNlNWDGk7fUlzy347DdFdFR_S_mSFQBulX10WkoxRjvx1FFJF_yrx9gvtexc9Oaf7_DxqyK4oFOVdI3Nrp30uI1HJx4nmF-uKyRh9pkY0hb69foC4yZ7Ka2zOWNsCTZkjPqJmwjXpgPbnH3VsFb9v8bEnJeBqqxExtK1nHMOUqll6O2q_9luxHr-Z8f_PpetUQL2HOlh4QPTI3fqlC"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-16 bg-white border-t border-slate-100">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 max-w-7xl mx-auto gap-8">
+<div class="flex items-center gap-12">
+<span class="text-xs uppercase tracking-widest text-slate-400 font-medium">© 2024 TalentFlow</span>
+<nav class="flex gap-8">
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-violet-500 transition-colors font-medium" href="#">About</a>
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-violet-500 transition-colors font-medium" href="#">Terms</a>
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-violet-500 transition-colors font-medium" href="#">Help</a>
+</nav>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-lg">language</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-lg">share</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
