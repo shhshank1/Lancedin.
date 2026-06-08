@@ -102,17 +102,17 @@ That's it. The AI will pick up exactly where we stopped.
 **Tasks:**
 - [x] `GET /api/talents` — return all TALENT users from DB (for SEEKER's discover page)
 - [x] Wire `ClientHomePage.tsx` to call real API (replace `featuredFreelancers` mock)
-- [ ] Wire `FreelancerHomePage.tsx` to call real API for jobs (replace `needsFeed` mock)
+- [x] Wire `FreelancerHomePage.tsx` to call real API for jobs (replace `needsFeed` mock)
 
 ### Phase 4B — Job Board Feature
 **Tasks:**
-- [ ] Add `Job` model to `prisma/schema.prisma`
-- [ ] Run `npx prisma migrate dev --name add-job-model`
-- [ ] `POST /api/jobs` — SEEKER creates a job posting
-- [ ] `GET /api/jobs` — anyone can browse job listings
-- [ ] `DELETE /api/jobs/:id` — SEEKER deletes their own job
-- [ ] New page: `PostJobPage.tsx` at route `/post-job`
-- [ ] Register route in `App.tsx`
+- [x] Add `Job` model to `prisma/schema.prisma`
+- [x] Run `npx prisma db push` to sync database schema
+- [x] `POST /api/jobs` — SEEKER creates a job posting
+- [x] `GET /api/jobs` — anyone can browse job listings
+- [x] `DELETE /api/jobs/:id` — SEEKER deletes their own job
+- [x] New page: `PostJobPage.tsx` at route `/post-job`
+- [x] Register route in `App.tsx`
 
 ### Phase 5 — "The Hired Way" Deployment Stack
 
