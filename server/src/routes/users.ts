@@ -1,8 +1,23 @@
 import express from "express";
+import { z } from "zod";
 import { requireAuth, AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../lib/prisma.js";
+import { validateBody } from "../middleware/validation.js";
 
 const router = express.Router();
+
+const updateProfileSchema = z.object({
+  role: z.enum(["SEEKER", "TALENT"]).optional(),
+  bio: z.string().max(500, "Bio cannot exceed 500 characters").optional().nullable(),
+  title: z.string().max(100, "Title cannot exceed 100 characters").optional().nullable(),
+  location: z.string().max(100, "Location cannot exceed 100 characters").optional().nullable(),
+  hourlyRate: z.union([
+    z.number().nonnegative(),
+    z.string().regex(/^\d+(\.\d+)?$/).transform(Number),
+    z.string().length(0).transform(() => null)
+  ]).optional().nullable(),
+  skills: z.array(z.string().min(1).max(30)).optional(),
+});
 
 // Get Current User Route
 router.get("/api/me", requireAuth, (req: AuthenticatedRequest, res) => {
@@ -10,15 +25,10 @@ router.get("/api/me", requireAuth, (req: AuthenticatedRequest, res) => {
 });
 
 // Update User Profile Route
-router.put("/api/users/profile", requireAuth, async (req: AuthenticatedRequest, res) => {
+router.put("/api/users/profile", requireAuth, validateBody(updateProfileSchema), async (req: AuthenticatedRequest, res) => {
   try {
     const userId = req.user.id;
     const { role, bio, title, location, hourlyRate, skills } = req.body;
-
-    // Validate role
-    if (role && role !== "SEEKER" && role !== "TALENT") {
-      return res.status(400).json({ message: "Invalid role selected" });
-    }
 
     // Prepare tags if skills is provided
     let skillsUpdate = undefined;
@@ -74,6 +84,50 @@ router.get("/api/users/contacts", requireAuth, async (req: AuthenticatedRequest,
     res.json({ contacts });
   } catch (error) {
     console.error("Error fetching contacts:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Get All Talents Route — powers the SEEKER discover/home page
+router.get("/api/talents", requireAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { search, skill } = req.query;
+
+    const talents = await prisma.user.findMany({
+      where: {
+        role: "TALENT",
+        onboarded: true,
+        // Filter by name or title if search query provided
+        ...(search && {
+          OR: [
+            { name: { contains: String(search), mode: "insensitive" } },
+            { title: { contains: String(search), mode: "insensitive" } },
+          ],
+        }),
+        // Filter by skill tag if provided
+        ...(skill && skill !== "All" && {
+          skills: {
+            some: { name: { equals: String(skill), mode: "insensitive" } },
+          },
+        }),
+      },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        title: true,
+        bio: true,
+        location: true,
+        hourlyRate: true,
+        skills: { select: { id: true, name: true } },
+        _count: { select: { projects: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    res.json({ talents });
+  } catch (error) {
+    console.error("Error fetching talents:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
