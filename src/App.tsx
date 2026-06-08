@@ -10,6 +10,7 @@ import { FreelancerHomePage } from "@/pages/FreelancerHomePage";
 import { OnboardingPage } from "@/pages/OnboardingPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { PortfolioUploadPage } from "@/pages/PortfolioUploadPage";
+import { PostJobPage } from "@/pages/PostJobPage";
 
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
@@ -26,10 +27,12 @@ const AppLayout: React.FC<{ readonly theme: "light" | "dark"; readonly onToggleT
           navigate("/onboarding");
         } else if (user.onboarded && location.pathname === "/onboarding") {
           navigate(user.role === "SEEKER" ? "/client" : "/freelancer");
+        } else if (user.onboarded && user.role !== "SEEKER" && location.pathname === "/post-job") {
+          navigate("/freelancer");
         }
       } else {
         const isProfilePath = location.pathname.startsWith("/profile");
-        const protectedRoutes = ["/client", "/freelancer", "/messages", "/onboarding", "/portfolio/upload", "/dashboard"];
+        const protectedRoutes = ["/client", "/freelancer", "/messages", "/onboarding", "/portfolio/upload", "/dashboard", "/post-job"];
         if (protectedRoutes.includes(location.pathname) || isProfilePath) {
           navigate("/");
         }
@@ -64,6 +67,7 @@ const AppLayout: React.FC<{ readonly theme: "light" | "dark"; readonly onToggleT
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/portfolio/upload" element={<PortfolioUploadPage />} />
+          <Route path="/post-job" element={<PostJobPage />} />
         </Routes>
       </main>
       {!isMessagingPage && <Footer />}

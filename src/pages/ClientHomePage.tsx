@@ -163,19 +163,27 @@ export const ClientHomePage: React.FC = () => {
             {loading ? "Loading..." : `${talents.length} talent${talents.length !== 1 ? "s" : ""} found`}
           </span>
         </div>
-        {searchQuery && (
+        <div className="flex items-center gap-4">
           <button
-            onClick={() => {
-              setSearchInput("");
-              setSearchQuery("");
-              fetchTalents("", activeSkill);
-            }}
-            className="flex items-center gap-1.5 text-sm text-primary hover:underline"
+            onClick={() => navigate("/post-job")}
+            className="px-5 py-2.5 rounded-full bg-primary text-on-primary font-semibold text-xs hover:opacity-90 active:scale-[0.98] transition-all shadow-sm"
           >
-            <RefreshCw size={13} />
-            Clear search
+            Post a Project Opportunity
           </button>
-        )}
+          {searchQuery && (
+            <button
+              onClick={() => {
+                setSearchInput("");
+                setSearchQuery("");
+                fetchTalents("", activeSkill);
+              }}
+              className="flex items-center gap-1.5 text-sm text-primary hover:underline"
+            >
+              <RefreshCw size={13} />
+              Clear search
+            </button>
+          )}
+        </div>
       </section>
 
       {/* Talent Grid */}

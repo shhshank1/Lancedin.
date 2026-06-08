@@ -43,6 +43,7 @@ model User {
   conversationsAsSeeker Conversation[] @relation("SeekerConversations")
   conversationsAsTalent Conversation[] @relation("TalentConversations")
   skills                Tag[]
+  jobs                  Job[]
 
   createdAt  DateTime @default(now())  // Automatically tracks when the row was created
   updatedAt  DateTime @updatedAt       // Automatically updates the timestamp when changed
@@ -74,6 +75,7 @@ model Tag {
   // Many-to-Many relationship with Projects
   projects  Project[]
   users     User[]
+  jobs      Job[]
 }
 
 // A chat room between exactly one Seeker and one Talent
@@ -111,4 +113,23 @@ model Message {
   isRead         Boolean      @default(false)
   
   createdAt      DateTime     @default(now())
+}
+
+// Job listings posted by Seekers
+model Job {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  company     String?
+  location    String?
+  budget      String
+  deadline    String?
+
+  seekerId    String
+  seeker      User     @relation(fields: [seekerId], references: [id], onDelete: Cascade)
+
+  tags        Tag[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
