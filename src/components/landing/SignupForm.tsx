@@ -51,7 +51,15 @@ export const SignupForm: React.FC<SignupFormProps> = ({ className = "" }) => {
         {/* OAuth Buttons */}
         <div className="grid grid-cols-2 gap-4">
           {oauthProviders.map((provider) => (
-            <Button key={provider.id} variant="secondary" size="md" className="justify-center">
+            <Button
+              key={provider.id}
+              variant="secondary"
+              size="md"
+              className="justify-center"
+              onClick={() => {
+                window.location.href = `http://localhost:3000/auth/${provider.id}`;
+              }}
+            >
               <span className="text-sm font-semibold">{provider.label}</span>
             </Button>
           ))}

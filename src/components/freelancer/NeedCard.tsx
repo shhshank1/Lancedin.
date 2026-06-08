@@ -65,6 +65,10 @@ export const NeedCard: React.FC<NeedCardProps> = ({
           <p className="text-on-surface-variant text-xs mb-1">Budget</p>
           <p className="text-on-surface font-bold">{budget}</p>
         </div>
+        <div className="text-center">
+          <p className="text-on-surface-variant text-xs mb-1">Timeline</p>
+          <p className="text-on-surface font-bold">{deadline}</p>
+        </div>
         <div className="text-right">
           <p className="text-on-surface-variant text-xs mb-1">Proposals</p>
           <p className="text-on-surface font-bold">{proposals}</p>

@@ -149,8 +149,13 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
         {loading ? (
           <div className="w-20 h-8 bg-surface-container animate-pulse rounded-lg" />
         ) : user ? (
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-semibold text-on-surface">{user.name}</span>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/profile"
+              className="text-sm font-semibold text-on-surface hover:text-primary transition-colors"
+            >
+              {user.name}
+            </Link>
             <button
               onClick={logout}
               className="text-xs font-semibold text-on-surface-variant hover:text-error transition-colors"
@@ -260,6 +265,16 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
             <MessageSquare size={16} />
             Messages
           </Link>
+          {user && (
+            <Link
+              to="/profile"
+              className="text-on-surface-variant text-sm font-semibold hover:text-primary transition-colors flex items-center gap-2"
+              onClick={() => setMobileOpen(false)}
+            >
+              <span className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center text-[8px] text-primary font-bold">P</span>
+              Profile
+            </Link>
+          )}
           <Button variant="primary" size="md" className="w-full" onClick={handleGoogleLogin}>
             Login
           </Button>

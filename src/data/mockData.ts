@@ -72,7 +72,7 @@ export const signupFormFields = [
 
 export const oauthProviders = [
   { id: "google", label: "Google", icon: "google" as const },
-  { id: "github", label: "Github", icon: "github" as const },
+  { id: "linkedin", label: "LinkedIn", icon: "linkedin" as const },
 ] as const;
 
 // ─── Client Home Mock Data ───

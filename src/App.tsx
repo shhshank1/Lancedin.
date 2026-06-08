@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@/hooks/useTheme";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -7,12 +7,45 @@ import { LandingPage } from "@/pages/LandingPage";
 import { ClientHomePage } from "@/pages/ClientHomePage";
 import { MessagingPage } from "@/pages/MessagingPage";
 import { FreelancerHomePage } from "@/pages/FreelancerHomePage";
+import { OnboardingPage } from "@/pages/OnboardingPage";
+import { ProfilePage } from "@/pages/ProfilePage";
+import { PortfolioUploadPage } from "@/pages/PortfolioUploadPage";
 
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 const AppLayout: React.FC<{ readonly theme: "light" | "dark"; readonly onToggleTheme: () => void }> = ({ theme, onToggleTheme }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const isMessagingPage = location.pathname === "/messages";
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        if (!user.onboarded && location.pathname !== "/onboarding") {
+          navigate("/onboarding");
+        } else if (user.onboarded && location.pathname === "/onboarding") {
+          navigate(user.role === "SEEKER" ? "/client" : "/freelancer");
+        }
+      } else {
+        const protectedRoutes = ["/client", "/freelancer", "/messages", "/onboarding", "/portfolio/upload", "/dashboard"];
+        if (protectedRoutes.includes(location.pathname)) {
+          navigate("/");
+        }
+      }
+    }
+  }, [user, loading, location.pathname, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-surface text-on-surface">
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 rounded-full border-4 border-primary/20 animate-pulse" />
+          <div className="absolute inset-0 rounded-full border-4 border-t-primary animate-spin" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-surface text-on-surface">
@@ -20,14 +53,15 @@ const AppLayout: React.FC<{ readonly theme: "light" | "dark"; readonly onToggleT
       <main className={`pt-16 ${isMessagingPage ? "flex-grow overflow-hidden" : "flex-grow"}`}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/client" element={<ClientHomePage />} />
           <Route path="/messages" element={<MessagingPage />} />
           <Route path="/dashboard" element={<PlaceholderPage title="Dashboard (You are logged in!)" />} />
           {/* Placeholder routes for remaining pages */}
           <Route path="/freelancer" element={<FreelancerHomePage />} />
           <Route path="/board" element={<PlaceholderPage title="Needs Board" />} />
-          <Route path="/profile" element={<PlaceholderPage title="Profile" />} />
-          <Route path="/portfolio/upload" element={<PlaceholderPage title="Portfolio Upload" />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/portfolio/upload" element={<PortfolioUploadPage />} />
         </Routes>
       </main>
       {!isMessagingPage && <Footer />}
