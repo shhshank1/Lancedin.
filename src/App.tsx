@@ -28,8 +28,9 @@ const AppLayout: React.FC<{ readonly theme: "light" | "dark"; readonly onToggleT
           navigate(user.role === "SEEKER" ? "/client" : "/freelancer");
         }
       } else {
+        const isProfilePath = location.pathname.startsWith("/profile");
         const protectedRoutes = ["/client", "/freelancer", "/messages", "/onboarding", "/portfolio/upload", "/dashboard"];
-        if (protectedRoutes.includes(location.pathname)) {
+        if (protectedRoutes.includes(location.pathname) || isProfilePath) {
           navigate("/");
         }
       }
@@ -61,6 +62,7 @@ const AppLayout: React.FC<{ readonly theme: "light" | "dark"; readonly onToggleT
           <Route path="/freelancer" element={<FreelancerHomePage />} />
           <Route path="/board" element={<PlaceholderPage title="Needs Board" />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/portfolio/upload" element={<PortfolioUploadPage />} />
         </Routes>
       </main>

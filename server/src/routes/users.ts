@@ -132,4 +132,34 @@ router.get("/api/talents", requireAuth, async (req: AuthenticatedRequest, res) =
   }
 });
 
+// Get Single Talent Route
+router.get("/api/talents/:id", requireAuth, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { id } = req.params;
+    const talent = await prisma.user.findUnique({
+      where: { id, role: "TALENT" },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        title: true,
+        bio: true,
+        location: true,
+        hourlyRate: true,
+        role: true,
+        skills: { select: { id: true, name: true } },
+      },
+    });
+
+    if (!talent) {
+      return res.status(404).json({ message: "Talent not found" });
+    }
+
+    res.json({ talent });
+  } catch (error) {
+    console.error("Error fetching talent profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 export default router;
