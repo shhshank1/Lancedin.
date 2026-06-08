@@ -116,15 +116,16 @@ That's it. The AI will pick up exactly where we stopped.
 
 ### Phase 5 — "The Hired Way" Deployment Stack
 
-#### 5A — Cloudflare R2 File Storage (replaces local Multer)
-**Why:** Local uploads get wiped on server restarts. R2 is permanent, free, and uses the same AWS S3 SDK.
-**Resume line:** "Implemented AWS S3-compatible object storage using `@aws-sdk/client-s3`"
-- [ ] Create Cloudflare account (free, no credit card)
-- [ ] Create R2 bucket named `lancedin-media`
+#### 5A — S3-Compatible Cloud Storage (replaces local Multer)
+**Why:** Local uploads get wiped on server restarts. We want permanent cloud storage using the official `@aws-sdk/client-s3` library to learn real backend/devops standards.
+**The No-Credit-Card S3 Hybrid Solution**: Since Cloudflare R2 requires a credit card to activate, we will use **Supabase's S3-Compatible Storage Gateway** on the free tier (no credit card required). We will still write **100% official S3 SDK code** (`@aws-sdk/client-s3`), keeping our resume credentials and backend architecture identical.
+- [ ] Create Supabase account (free, no credit card)
+- [ ] Create public storage bucket named `lancedin-media`
+- [ ] Generate S3 Access Key & Secret Key in Supabase Project Settings -> Storage
 - [ ] Install `@aws-sdk/client-s3` in server
-- [ ] Update `routes/upload.ts` to use S3Client pointed at R2
-- [ ] Store returned URL in `Project.mediaUrl` field in DB
-- [ ] Add R2 env vars to `.env`
+- [ ] Update `routes/upload.ts` to use S3Client configured with Supabase's S3 endpoint and credentials
+- [ ] Store returned public URL in `Project.mediaUrl` field in DB
+- [ ] Add S3 env vars to `.env`
 
 #### 5B — Docker Container
 **Why:** Every company runs backend services in Docker. Shows production thinking.
@@ -177,7 +178,7 @@ That's it. The AI will pick up exactly where we stopped.
 | Database | PostgreSQL (Neon — cloud) | Already deployed |
 | ORM | Prisma 7 with `@prisma/adapter-pg` | |
 | Validation | Zod | On all API endpoints |
-| File Uploads | AWS S3 SDK → Cloudflare R2 | Free, S3-compatible |
+| File Uploads | AWS S3 SDK → Supabase S3 Gateway | Free, S3-compatible |
 | Container | Docker | For Railway deployment |
 | CI/CD | GitHub Actions | Auto deploy on push |
 | Backend Host | Railway | Free tier |
@@ -208,7 +209,7 @@ d:\new\server\                   ← Backend
 │   │   ├── users.ts             ← Profile endpoints
 │   │   ├── projects.ts          ← Portfolio CRUD
 │   │   ├── messages.ts          ← Conversations + messages
-│   │   └── upload.ts            ← File upload (Multer → will become R2)
+│   │   └── upload.ts            ← File upload (Multer → will become S3-compatible Supabase)
 │   ├── middleware/
 │   │   ├── auth.ts              ← requireAuth middleware
 │   │   └── validation.ts        ← validateBody(zodSchema) middleware
@@ -258,4 +259,4 @@ docs: update Memory.md with deployment steps
 > **LancedIn** — Full-Stack Freelance Marketplace  
 > *React · Node.js · TypeScript · PostgreSQL · Socket.io · Docker · GitHub Actions*
 >
-> Built a production-grade freelance marketplace from scratch with OAuth 2.0 authentication (Google + LinkedIn), real-time messaging via WebSockets, and role-based access control. Implemented AWS S3-compatible object storage using `@aws-sdk/client-s3` pointed at Cloudflare R2 for zero-cost media uploads. Containerized the backend with Docker, set up a GitHub Actions CI/CD pipeline for automated type-checking and deployment to Railway, and deployed the frontend to Vercel.
+> Built a production-grade freelance marketplace from scratch with OAuth 2.0 authentication (Google + LinkedIn), real-time messaging via WebSockets, and role-based access control. Implemented AWS S3-compatible object storage using `@aws-sdk/client-s3` pointed at Supabase's S3 Gateway for zero-cost media uploads. Containerized the backend with Docker, set up a GitHub Actions CI/CD pipeline for automated type-checking and deployment to Railway, and deployed the frontend to Vercel.
