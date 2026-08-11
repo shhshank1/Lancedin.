@@ -5,6 +5,7 @@ import { MessageBubble } from "@/components/messaging/MessageBubble";
 import { useAuth } from "@/context/AuthContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { io, Socket } from "socket.io-client";
 
 interface Contact {
   id: string;
@@ -50,6 +51,8 @@ export const MessagingPage: React.FC = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const socketRef = useRef<Socket | null>(null);
+  const activeConversationRef = useRef<string | null>(null);
 
   // Fetch conversations
   const fetchConversations = async (silent = false) => {
@@ -112,18 +115,44 @@ export const MessagingPage: React.FC = () => {
     fetchContacts();
   }, []);
 
-  // Poll for new messages and conversation updates
+  // Keep activeConversationRef sync'd to prevent closure stale state in sockets
+  useEffect(() => {
+    activeConversationRef.current = activeConversation;
+  }, [activeConversation]);
+
+  // Setup Socket.io real-time connection
+  useEffect(() => {
+    if (!user) return;
+
+    const socket = io("http://localhost:3000", {
+      withCredentials: true,
+    });
+    socketRef.current = socket;
+
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+      socket.emit("join", user.id);
+    });
+
+    socket.on("message:received", (data: { message: Message; conversationId: string }) => {
+      if (activeConversationRef.current === data.conversationId) {
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === data.message.id)) return prev;
+          return [...prev, data.message];
+        });
+      }
+      fetchConversations(true);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user]);
+
+  // Load message history on active conversation change
   useEffect(() => {
     if (!activeConversation) return;
-
     fetchMessages(activeConversation);
-
-    const interval = setInterval(() => {
-      fetchMessages(activeConversation, true);
-      fetchConversations(true);
-    }, 3000);
-
-    return () => clearInterval(interval);
   }, [activeConversation]);
 
   // Scroll on message length change

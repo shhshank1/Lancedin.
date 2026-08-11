@@ -13,7 +13,40 @@ export const PortfolioUploadPage: React.FC = () => {
   const [skills, setSkills] = useState<string[]>([]);
   const [skillInput, setSkillInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingFile, setUploadingFile] = useState(false);
   const [error, setError] = useState("");
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingFile(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/upload", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMediaUrl(data.url);
+      } else {
+        const data = await response.json();
+        setError(data.message || "Failed to upload image file.");
+      }
+    } catch (err) {
+      console.error("File upload failed", err);
+      setError("An error occurred during file upload.");
+    } finally {
+      setUploadingFile(false);
+    }
+  };
 
   const suggestedTags = ["React", "TypeScript", "Node.js", "UI/UX Design", "Motion Graphics", "3D Modeling", "Branding"];
 
@@ -123,13 +156,39 @@ export const PortfolioUploadPage: React.FC = () => {
               />
             </div>
 
-            <Input
-              id="mediaUrl"
-              label="Media Image URL"
-              placeholder="e.g. https://images.unsplash.com/photo-..."
-              value={mediaUrl}
-              onChange={(e) => setMediaUrl(e.target.value)}
-            />
+            <div className="space-y-2">
+              <label className="block text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">
+                Project Cover Image
+              </label>
+              <div className="relative border-2 border-dashed border-outline-variant/30 rounded-2xl p-6 text-center hover:border-primary/50 transition-all bg-surface-container-low flex flex-col items-center justify-center min-h-32">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  disabled={uploadingFile}
+                />
+                {uploadingFile ? (
+                  <div className="space-y-2 flex flex-col items-center">
+                    <div className="relative w-8 h-8">
+                      <div className="absolute inset-0 rounded-full border-4 border-primary/20 animate-pulse" />
+                      <div className="absolute inset-0 rounded-full border-4 border-t-primary animate-spin" />
+                    </div>
+                    <span className="text-xs text-on-surface-variant font-bold">Uploading file to server...</span>
+                  </div>
+                ) : mediaUrl ? (
+                  <div className="text-xs text-on-surface-variant flex flex-col items-center space-y-2">
+                    <span className="text-primary font-bold">✓ Uploaded successfully!</span>
+                    <span className="opacity-70">Click or drag a new file to replace</span>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-on-surface">Click to select or drag cover image here</p>
+                    <p className="text-xs text-on-surface-variant/70">PNG, JPG, or WEBP up to 5MB</p>
+                  </div>
+                )}
+              </div>
+            </div>
 
             {mediaUrl && (
               <div className="relative rounded-xl overflow-hidden border border-outline-variant/10 bg-surface-container h-48 flex items-center justify-center">

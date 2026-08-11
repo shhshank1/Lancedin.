@@ -1,6 +1,17 @@
 import express from "express";
+import { z } from "zod";
 import { requireAuth, AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../lib/prisma.js";
+import { validateBody } from "../middleware/validation.js";
+
+// Zod Schemas for validation
+const createConversationSchema = z.object({
+  recipientId: z.string().uuid("Invalid recipient ID format"),
+});
+
+const sendMessageSchema = z.object({
+  content: z.string().min(1, "Message cannot be empty").max(2000, "Message cannot exceed 2000 characters"),
+});
 
 const router = express.Router();
 
@@ -52,13 +63,9 @@ router.get("/api/conversations", requireAuth, async (req: AuthenticatedRequest, 
 });
 
 // Create Conversation Route
-router.post("/api/conversations", requireAuth, async (req: AuthenticatedRequest, res) => {
+router.post("/api/conversations", requireAuth, validateBody(createConversationSchema), async (req: AuthenticatedRequest, res) => {
   try {
     const { recipientId } = req.body;
-
-    if (!recipientId) {
-      return res.status(400).json({ message: "Recipient ID is required" });
-    }
 
     const recipient = await prisma.user.findUnique({
       where: { id: recipientId },
@@ -146,14 +153,10 @@ router.get("/api/conversations/:id/messages", requireAuth, async (req: Authentic
 });
 
 // Send Message Route
-router.post("/api/conversations/:id/messages", requireAuth, async (req: AuthenticatedRequest, res) => {
+router.post("/api/conversations/:id/messages", requireAuth, validateBody(sendMessageSchema), async (req: AuthenticatedRequest, res) => {
   try {
     const conversationId = req.params.id;
     const { content } = req.body;
-
-    if (!content) {
-      return res.status(400).json({ message: "Message content is required" });
-    }
 
     const conversation = await prisma.conversation.findUnique({
       where: { id: conversationId },
@@ -180,6 +183,16 @@ router.post("/api/conversations/:id/messages", requireAuth, async (req: Authenti
       where: { id: conversationId },
       data: { updatedAt: new Date() },
     });
+
+    // Emit real-time WebSocket event to the recipient's room
+    const io = req.app.get("io");
+    if (io) {
+      const recipientId = conversation.seekerId === req.user.id ? conversation.talentId : conversation.seekerId;
+      io.to(recipientId).emit("message:received", {
+        message,
+        conversationId,
+      });
+    }
 
     res.status(201).json({ message });
   } catch (error) {

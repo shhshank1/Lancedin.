@@ -1,0 +1,56 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, feat/onboarding-portfolio-messaging ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  typecheck-and-build:
+    name: Type Check & Build Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install Dependencies
+        run: |
+          cd server
+          npm ci
+
+      - name: Generate Prisma Client
+        run: |
+          cd server
+          npx prisma generate
+
+      - name: Run TypeScript Compiler Check
+        run: |
+          cd server
+          npm run build
+
+  deploy-railway:
+    name: Deploy Backend to Railway
+    needs: typecheck-and-build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/onboarding-portfolio-messaging'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      - name: Deploy to Railway
+        run: railway up --service server
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

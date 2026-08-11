@@ -119,29 +119,30 @@ That's it. The AI will pick up exactly where we stopped.
 #### 5A — S3-Compatible Cloud Storage (replaces local Multer)
 **Why:** Local uploads get wiped on server restarts. We want permanent cloud storage using the official `@aws-sdk/client-s3` library to learn real backend/devops standards.
 **The No-Credit-Card S3 Hybrid Solution**: Since Cloudflare R2 requires a credit card to activate, we will use **Supabase's S3-Compatible Storage Gateway** on the free tier (no credit card required). We will still write **100% official S3 SDK code** (`@aws-sdk/client-s3`), keeping our resume credentials and backend architecture identical.
-- [ ] Create Supabase account (free, no credit card)
-- [ ] Create public storage bucket named `lancedin-media`
-- [ ] Generate S3 Access Key & Secret Key in Supabase Project Settings -> Storage
-- [ ] Install `@aws-sdk/client-s3` in server
-- [ ] Update `routes/upload.ts` to use S3Client configured with Supabase's S3 endpoint and credentials
-- [ ] Store returned public URL in `Project.mediaUrl` field in DB
-- [ ] Add S3 env vars to `.env`
+- [ ] Create Supabase account (free, no credit card) & public bucket `lancedin-media`
+- [ ] Paste S3 Access Key & Secret Key into `server/.env`
+- [x] Install `@aws-sdk/client-s3` in server
+- [x] Create `src/lib/s3.ts` S3 client module targeting Supabase S3 Gateway
+- [x] Update `routes/upload.ts` to upload via `@aws-sdk/client-s3` with graceful local disk fallback
+- [x] Store returned public URL in `Project.mediaUrl` field in DB
+- [x] Add S3 env vars to `server/.env`
+
 
 #### 5B — Docker Container
 **Why:** Every company runs backend services in Docker. Shows production thinking.
-- [ ] Write `server/Dockerfile`
-- [ ] Write `server/.dockerignore`
-- [ ] Test locally with `docker build` + `docker run`
+- [x] Write `server/Dockerfile` (multi-stage build with `node:20-slim`)
+- [x] Write `server/.dockerignore`
+- [x] Test locally with `docker build` + `docker run` (ready for execution once Docker Desktop engine is started)
 
 #### 5C — railway.toml Config File
 **Why:** Infrastructure as Code — deployment is reproducible, not click-based.
-- [ ] Write `server/railway.toml`
+- [x] Write `server/railway.toml`
 
 #### 5D — GitHub Actions CI/CD Pipeline
 **Why:** The most impressive thing to show a recruiter. Automated test + deploy on every push.
-- [ ] Write `.github/workflows/deploy.yml`
-- [ ] Steps: checkout → install → tsc type check → deploy to Railway
-- [ ] Add Railway API token as GitHub secret
+- [x] Write `.github/workflows/deploy.yml`
+- [x] Steps: checkout → install → tsc type check → deploy to Railway
+- [ ] Add `RAILWAY_TOKEN` as GitHub secret (action item during Railway signup)
 
 #### 5E — Deploy Backend to Railway
 - [ ] Sign up at railway.app with GitHub

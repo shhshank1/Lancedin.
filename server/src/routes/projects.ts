@@ -1,17 +1,35 @@
 import express from "express";
+import { z } from "zod";
 import { requireAuth, AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../lib/prisma.js";
+import { validateBody } from "../middleware/validation.js";
+
+// Zod Schemas for validation
+const createProjectSchema = z.object({
+  title: z.string().min(1, "Title is required").max(100, "Title must be 100 characters or less"),
+  description: z.string().max(1000, "Description must be 1000 characters or less").optional().nullable(),
+  mediaUrl: z.string().url("Invalid media URL format").or(z.string().length(0)).optional().nullable(),
+  tags: z.array(z.string().min(1).max(30)).optional(),
+});
+
+const updateProjectSchema = z.object({
+  title: z.string().min(1, "Title is required").max(100, "Title must be 100 characters or less").optional(),
+  description: z.string().max(1000, "Description must be 1000 characters or less").optional().nullable(),
+  mediaUrl: z.string().url("Invalid media URL format").or(z.string().length(0)).optional().nullable(),
+  tags: z.array(z.string().min(1).max(30)).optional(),
+});
 
 const router = express.Router();
 
 // Create Project Route
-router.post("/", requireAuth, async (req: AuthenticatedRequest, res) => {
+router.post("/", requireAuth, validateBody(createProjectSchema), async (req: AuthenticatedRequest, res) => {
   try {
-    const { title, description, mediaUrl, tags } = req.body;
-
-    if (!title) {
-      return res.status(400).json({ message: "Title is required" });
+    // Check if the user has the TALENT role
+    if (req.user.role !== "TALENT") {
+      return res.status(403).json({ message: "Only Talent/Creators can post portfolio projects" });
     }
+
+    const { title, description, mediaUrl, tags } = req.body;
 
     let tagConnections = undefined;
     if (Array.isArray(tags)) {
@@ -111,7 +129,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Update Project Route
-router.put("/:id", requireAuth, async (req: AuthenticatedRequest, res) => {
+router.put("/:id", requireAuth, validateBody(updateProjectSchema), async (req: AuthenticatedRequest, res) => {
   try {
     const projectId = req.params.id;
     const { title, description, mediaUrl, tags } = req.body;
